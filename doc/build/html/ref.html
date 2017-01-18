@@ -1,0 +1,178 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ru">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Описание программы &mdash; Документация monitor 1.0 rc</title>
+    
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0 rc',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/translations.js"></script>
+    <link rel="top" title="Документация monitor 1.0 rc" href="index.html" />
+    <link rel="next" title="Cерверная часть" href="install_server.html" />
+    <link rel="prev" title="Руководство пользователя системы мониторинга Monitor" href="index.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Навигация</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="Алфавитный указатель"
+             accesskey="I">указатель</a></li>
+        <li class="right" >
+          <a href="install_server.html" title="Cерверная часть"
+             accesskey="N">вперёд</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Руководство пользователя системы мониторинга Monitor"
+             accesskey="P">назад</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Документация monitor 1.0 rc</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="id1">
+<h1>Описание программы<a class="headerlink" href="#id1" title="Ссылка на этот заголовок">¶</a></h1>
+<div class="section" id="id2">
+<h2>Назначение<a class="headerlink" href="#id2" title="Ссылка на этот заголовок">¶</a></h2>
+<dl class="docutils">
+<dt>Программа мониторинга Monitor предназначена для мониторинга ТИ совместно с системой Zabbix. Может сообщать следующие параметры ТИ:</dt>
+<dd><ul class="first last simple">
+<li>кол-во СМЭВ запросов, направленных ТИ;</li>
+<li>кол-во предоставленных ТИ ответов на СМЭВ запросы, пришедших из сторонних ИС;</li>
+<li>кол-во заявлений ПГУ/МФЦ полученных ТИ;</li>
+<li>кол-во ответов на заявления ПГУ/МФЦ.</li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="id3">
+<span id="id4"></span><h2>Состав<a class="headerlink" href="#id3" title="Ссылка на этот заголовок">¶</a></h2>
+<p>Программа написана на языке Python3 и использует стороннюю библиотеки pypyodbc для работы с БД.
+Программа состоит из 2-х основных частей:</p>
+<blockquote>
+<div><ol class="arabic">
+<li><dl class="first docutils">
+<dt>Cерверная часть. Устанавливается на сервер с ТИ, работает с IIS.</dt>
+<dd><ul class="first last simple">
+<li>config.ini - файл с конфигурацией, для подсоединения к БД;</li>
+<li>errorCode.txt - коды ошибок и их описание (вы можете дополнить/изменить описания);</li>
+<li>cgi.py - веб-приложение;</li>
+<li>getInfo.py - хранит функции для извлечения информации из БД;</li>
+<li>sendRequest.py - функция запроса к веб-сервису;</li>
+<li>tests.py - тесты для проверки работоспособности сервиса;</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Клиентская часть. Устанавливается на компьютера в Zabbix.</dt>
+<dd><ul class="first last simple">
+<li>sendRequest.py - функция запроса к веб-сервису;</li>
+<li>monitorRequest.py - программа клиент, отправляет запросы на сервер.</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p class="first">Документация. Находится в папке doc/</p>
+</li>
+</ol>
+</div></blockquote>
+</div>
+<div class="section" id="id5">
+<h2>Принцип работы<a class="headerlink" href="#id5" title="Ссылка на этот заголовок">¶</a></h2>
+<blockquote>
+<div><ol class="arabic simple">
+<li>Серверная часть устанавливается на IIS и ожидает запроса по адресу <a class="reference external" href="http://IP/monitor/cgi.py">http://IP/monitor/cgi.py</a>.</li>
+<li>Клиентская часть устанавливается на сервер с Zabbix.</li>
+<li>Настраивается Zabbix агент, который обращается к клиентской программе, передавая в качестве параметра нужный вид сведений.</li>
+<li>Клиентская программа отправляет запрос на сервер и получает ответ сразу по всем видам сведений. Далее оне извлекает только нужные сведения и возвращает их как ответ Zabbix агенту. Ответ это целое число &gt;=0, если в ответ пришла -1 это ошибка. При правильно установленной и проверенной серверной части может возникнуть только из неработоспособности IIS или SQL, важный сигнал!</li>
+<li>Zabbix использует ответ для построения своих графиков и прочего.</li>
+</ol>
+</div></blockquote>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Оглавление</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Описание программы</a><ul>
+<li><a class="reference internal" href="#id2">Назначение</a></li>
+<li><a class="reference internal" href="#id3">Состав</a></li>
+<li><a class="reference internal" href="#id5">Принцип работы</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Предыдущий раздел</h4>
+  <p class="topless"><a href="index.html"
+                        title="предыдущая глава">Руководство пользователя системы мониторинга Monitor</a></p>
+  <h4>Следующий раздел</h4>
+  <p class="topless"><a href="install_server.html"
+                        title="следующая глава">Cерверная часть</a></p>
+  <div role="note" aria-label="source link">
+    <h3>Эта страница</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/ref.txt"
+            rel="nofollow">Исходный текст</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Быстрый поиск</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Искать" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Навигация</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="Алфавитный указатель"
+             >указатель</a></li>
+        <li class="right" >
+          <a href="install_server.html" title="Cерверная часть"
+             >вперёд</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Руководство пользователя системы мониторинга Monitor"
+             >назад</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Документация monitor 1.0 rc</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2017, Prostakov A.N..
+      Создано с помощью <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.5.
+    </div>
+  </body>
+</html>

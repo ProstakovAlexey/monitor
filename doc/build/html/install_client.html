@@ -1,0 +1,151 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ru">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Клиентская часть &mdash; Документация monitor 1.0 rc</title>
+    
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0 rc',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/translations.js"></script>
+    <link rel="top" title="Документация monitor 1.0 rc" href="index.html" />
+    <link rel="prev" title="Cерверная часть" href="install_server.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Навигация</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="Алфавитный указатель"
+             accesskey="I">указатель</a></li>
+        <li class="right" >
+          <a href="install_server.html" title="Cерверная часть"
+             accesskey="P">назад</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Документация monitor 1.0 rc</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="id1">
+<h1>Клиентская часть<a class="headerlink" href="#id1" title="Ссылка на этот заголовок">¶</a></h1>
+<p>Установка выполняется на любом сервере, который может обратится в 80 порты ТИ и отправлять данные на Zabbix сервер.</p>
+<div class="section" id="id2">
+<h2>Установка<a class="headerlink" href="#id2" title="Ссылка на этот заголовок">¶</a></h2>
+<p>Программа написано и была проверена на python 3.5, но я думаю она будет работать под любым python3.</p>
+<ol class="arabic simple">
+<li>Установите python3 (<a class="reference external" href="https://www.python.org/downloads/">https://www.python.org/downloads/</a>). При установке обратите внимание, что надо ставить для всех пользователей и добавить python в <strong>Path</strong>.</li>
+<li>Создайте произвольную папку и скопируйте туда файлы клиентской части - <a class="reference internal" href="ref.html#id3"><span class="std std-ref">Состав</span></a>.</li>
+</ol>
+</div>
+<div class="section" id="id3">
+<h2>Проверка работы<a class="headerlink" href="#id3" title="Ссылка на этот заголовок">¶</a></h2>
+<ol class="arabic">
+<li><p class="first">Проверку работы клиентской части нужно проводить только после успешной установки и проверки работы серверной части.</p>
+</li>
+<li><p class="first">Откройте CMD(от пользователя) и перейдите в папку с установленной клиентской часть.</p>
+</li>
+<li><p class="first">Выполните команду: <cite>python monitorRequest.py -h</cite>. Должна появится справка:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">usage</span><span class="p">:</span> <span class="n">monitorRequest</span><span class="o">.</span><span class="n">py</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">a</span> <span class="n">addr</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">p</span> <span class="n">port</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">s</span> <span class="n">site</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">m</span> <span class="n">method</span><span class="p">]</span>
+
+<span class="n">Программа</span> <span class="n">делает</span> <span class="n">запрос</span> <span class="n">к</span> <span class="n">сервису</span> <span class="n">мониторинга</span> <span class="n">ТИ</span>
+
+<span class="n">optional</span> <span class="n">arguments</span><span class="p">:</span>
+<span class="o">-</span><span class="n">h</span><span class="p">,</span> <span class="o">--</span><span class="n">help</span>  <span class="n">show</span> <span class="n">this</span> <span class="n">help</span> <span class="n">message</span> <span class="ow">and</span> <span class="n">exit</span>
+<span class="o">-</span><span class="n">a</span> <span class="n">addr</span>     <span class="n">Имя</span> <span class="n">или</span> <span class="n">IP</span> <span class="n">адрес</span> <span class="n">сервера</span> <span class="n">для</span> <span class="n">запроса</span>
+<span class="o">-</span><span class="n">p</span> <span class="n">port</span>     <span class="n">Порт</span> <span class="n">сервера</span> <span class="n">для</span> <span class="n">запроса</span>
+<span class="o">-</span><span class="n">s</span> <span class="n">site</span>     <span class="n">Сайт</span>
+<span class="o">-</span><span class="n">m</span> <span class="n">method</span>   <span class="n">Вид</span> <span class="n">сведений</span><span class="o">.</span> <span class="n">Возможные</span> <span class="n">значения</span><span class="p">:</span> <span class="n">requestSmev</span> <span class="o">-</span> <span class="n">запросы</span> <span class="n">в</span> <span class="n">СМЭВ</span><span class="p">;</span>
+          <span class="n">requestPGU</span> <span class="o">-</span> <span class="n">заявления</span> <span class="n">от</span> <span class="n">ПГУ</span><span class="o">/</span><span class="n">МФЦ</span><span class="p">;</span> <span class="n">responsePGU</span> <span class="o">-</span> <span class="n">ответы</span> <span class="n">на</span>
+          <span class="n">заявления</span> <span class="n">ПГУ</span><span class="o">/</span><span class="n">МФЦ</span><span class="p">;</span> <span class="n">responseSmev</span> <span class="o">-</span> <span class="n">ответы</span> <span class="n">на</span> <span class="n">СМЭВ</span> <span class="n">запросы</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Попробуйте запрос на виды сведений, например на кол-во заявлений с ПГУ: <cite>python monitorRequest.py -a 192.168.0.104 -p 80 -s monitor -m requestSmev</cite>. Результат - число больше 0, если -1 - по возникла ошибка.</p>
+</li>
+</ol>
+</div>
+<div class="section" id="id4">
+<h2>Работа клиентской части<a class="headerlink" href="#id4" title="Ссылка на этот заголовок">¶</a></h2>
+<p>Ниже приведу примеры вызова клиентской программы, которые Вы можете использовать для интеграции с Zabbix и подобными системами. Обратите внимание, что данные кэшируются, чтобы избежать лишней нагрузки на сервер. Данные возвращаются за последний час, т.е. если Вы вызвали программу в 11:34, то придут данные с 10:34-11:34, более подробно можете посмотреть в <a class="reference internal" href="install_server.html#server-work"><span class="std std-ref">Описание работы</span></a>.</p>
+<p>Кол-во заявления ПГУ/МФЦ:</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Оглавление</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Клиентская часть</a><ul>
+<li><a class="reference internal" href="#id2">Установка</a></li>
+<li><a class="reference internal" href="#id3">Проверка работы</a></li>
+<li><a class="reference internal" href="#id4">Работа клиентской части</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Предыдущий раздел</h4>
+  <p class="topless"><a href="install_server.html"
+                        title="предыдущая глава">Cерверная часть</a></p>
+  <div role="note" aria-label="source link">
+    <h3>Эта страница</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/install_client.txt"
+            rel="nofollow">Исходный текст</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Быстрый поиск</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Искать" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Навигация</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="Алфавитный указатель"
+             >указатель</a></li>
+        <li class="right" >
+          <a href="install_server.html" title="Cерверная часть"
+             >назад</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Документация monitor 1.0 rc</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2017, Prostakov A.N..
+      Создано с помощью <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.5.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,236 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ru">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Cерверная часть &mdash; Документация monitor 1.0 rc</title>
+    
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0 rc',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/translations.js"></script>
+    <link rel="top" title="Документация monitor 1.0 rc" href="index.html" />
+    <link rel="next" title="Клиентская часть" href="install_client.html" />
+    <link rel="prev" title="Описание программы" href="ref.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Навигация</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="Алфавитный указатель"
+             accesskey="I">указатель</a></li>
+        <li class="right" >
+          <a href="install_client.html" title="Клиентская часть"
+             accesskey="N">вперёд</a> |</li>
+        <li class="right" >
+          <a href="ref.html" title="Описание программы"
+             accesskey="P">назад</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Документация monitor 1.0 rc</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="c">
+<h1>Cерверная часть<a class="headerlink" href="#c" title="Ссылка на этот заголовок">¶</a></h1>
+<p>Установка выполняется на том же сервере, где стоит IIS ТИ. Поэтому установка самого IIS не рассматривается, если она требуется, поищите инструкции в интернете.</p>
+<div class="section" id="python">
+<span id="python-install"></span><h2>Установка Python и библиотек<a class="headerlink" href="#python" title="Ссылка на этот заголовок">¶</a></h2>
+<p>Программа написано и была проверена на python 3.5, но я думаю она будет работать под любым python3.</p>
+<ol class="arabic simple">
+<li>Установите python3 (<a class="reference external" href="https://www.python.org/downloads/">https://www.python.org/downloads/</a>). При установке обратите внимание, что надо ставить для всех пользователей и добавить python в path.</li>
+<li>Установите дополнительную библиотеку для работы с БД MS SQL. Для этого откройте CMD с правами администратора и выполните:
+<cite>pip install pypyodbc</cite>
+Компьютер должен быть подключен к интернету. Если не подключен, то на другом выполните:
+<cite>pip download pypyodbc</cite>
+он скачает пакет, далее перенесите пакет на сервер и выполните там:
+<cite>pip install полный_путь_к_pypyodbc</cite></li>
+</ol>
+</div>
+<div class="section" id="iis">
+<h2>Настройка IIS<a class="headerlink" href="#iis" title="Ссылка на этот заголовок">¶</a></h2>
+<ol class="arabic simple">
+<li>Установить CGI для IIS, как написано тут - <a class="reference external" href="http://netdot.co/2015/03/09/flask-on-iis/">http://netdot.co/2015/03/09/flask-on-iis/</a></li>
+<li>В папку IIS wwwroot добавить папку monitor, скопируйте туда файлы от серверной части - <a class="reference internal" href="ref.html#id3"><span class="std std-ref">Состав</span></a>.</li>
+<li>В диспетчере службы IIS добавьте пул приложения, это в будущем даст возможность перезапускать только его или избежать конфликтов с другими приложениями.</li>
+</ol>
+<img alt="Настройка пула приложения" class="align-center" src="_images/pull.jpg" />
+<ol class="arabic simple" start="4">
+<li>В диспетчера нажмите на папку правой кнопкой и выберите добавить приложение, после этого рядом с папкой появится значок интернета.</li>
+<li>В диспетчере нажмите <img alt="Сопоставление обработчиков" src="_images/obr_1.jpg" /> и добавьте новый обработчик для файлов <cite>.py</cite>. Обратите внимание, что надо правильно задать путь для  python.</li>
+</ol>
+<img alt="Настройка обработчика для файлов python" class="align-center" src="_images/obr.jpg" />
+</div>
+<div class="section" id="id1">
+<h2>Настройка программы<a class="headerlink" href="#id1" title="Ссылка на этот заголовок">¶</a></h2>
+<p>Чтобы монитор мог работать знать адрес БД ТИ и уметь к ней подключатся, это настраивается в файл <strong>config.ini</strong>. Файл снабжен комментариями, пожалуйста заполните его для своей системы.</p>
+</div>
+<div class="section" id="id2">
+<h2>Запуск тестов<a class="headerlink" href="#id2" title="Ссылка на этот заголовок">¶</a></h2>
+<p>После установки и настройки ПО нужно запустить тесты для проверки его работы. Набор тестов запускается на сервере, где установлен IIS.</p>
+<ol class="arabic simple">
+<li>Открой CMD и перейдите в каталог с установленным <strong>tests.py</strong>.</li>
+<li>Запустить тестовое приложение: <cite>python -m unittest tests.py</cite>. В случае успешной работы напишет - ОК, иначе ошибки.</li>
+</ol>
+</div>
+<div class="section" id="id3">
+<h2>Возможные проблемы<a class="headerlink" href="#id3" title="Ссылка на этот заголовок">¶</a></h2>
+<ol class="arabic simple">
+<li>Тест не запустился. Пишет, что python не является программой - надо добавить его в path.</li>
+<li>Запустился, но ругается на отсутствие модуля pypyodbc - установите его, как написано выше.</li>
+<li>Провалился тест подключения к БД - проверьте конфигурационный файл.</li>
+<li>Провалились другие тесты - проверьте процесс установки, вероятно неправильно настроен IIS. Можете попробовать перейти в браузере по ссылке <a class="reference external" href="http://127.0.0.1/monitor/cgi.py/test">http://127.0.0.1/monitor/cgi.py/test</a> и почитать, в чем причина.</li>
+</ol>
+</div>
+<div class="section" id="server-work">
+<span id="id4"></span><h2>Описание работы<a class="headerlink" href="#server-work" title="Ссылка на этот заголовок">¶</a></h2>
+<dl class="docutils">
+<dt>Серверная часть представляет собой веб-сервис, работающий под управлением IIS. Взаимодействие с IIS выполняется используя CGI, взаимодействие с клиентом - REST сервис, ответ JSON структура. После развертывания веб-сервис ожидает запроса по адресу <a class="reference external" href="http://IP/monitor/cgi.py">http://IP/monitor/cgi.py</a>. При получении запроса происходит обращение в БД ТИ и извлекается протокол за последний час, так если запрос пришел в 9:54, то будет извлечен протокол с 8:54 до 9:54. Операция довольно трудоемкая, поэтому предусмотрены следующие особенности:</dt>
+<dd><ul class="first last simple">
+<li>извлекаются сразу все записи протокола;</li>
+<li>они анализируются на стороне ПО Monitor и извлекаются сразу все данные, которые может вернуть сервер;</li>
+<li>в каждом ответе сервера содержатся сразу все данные, разбор их происходит на стороне клиента;</li>
+<li>т.к. из-за особенностей работы Zabbix приходится спрашивать отдельно по каждому виду сведений, чтобы избежать многократного опроса БД, введено кэширование данные (силами IIS) - период кэширования 10 мин. Поэтому рекомендуется в течении этого периода послать все запросы. Далее будут примеры, где можно посмотреть как это работает.</li>
+</ul>
+</dd>
+</dl>
+<p>Сервис рассчитан на  взаимодействие с клиентом (из состава ПО), но далее приведу примеры запросов, их можно использовать интеграции со сторонним ПО или дополнительной проверки работы. Запросы можно выполнять прямо из браузера, к запросам можно переходить только если выполнили установку и успешное тестирование.</p>
+<div class="section" id="id5">
+<h3>Тестовый запрос<a class="headerlink" href="#id5" title="Ссылка на этот заголовок">¶</a></h3>
+<p>Он Всегда возвращает одинаковое значение, обращение к БД не происходит. Запрос:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="o">/</span><span class="n">monitor</span><span class="o">/</span><span class="n">cgi</span><span class="o">.</span><span class="n">py</span><span class="o">/</span><span class="n">test</span>
+</pre></div>
+</div>
+<p>Ответ:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s2">&quot;errorCode&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;info&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;test&quot;</span><span class="p">:</span> <span class="mi">20</span><span class="p">},</span> <span class="s2">&quot;errorMessage&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="s2">&quot;18.01.2017 08:55:06&quot;</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id6">
+<h3>Запрос возвращающий данные<a class="headerlink" href="#id6" title="Ссылка на этот заголовок">¶</a></h3>
+<p>Возвращает данные, выполняет запрос к БД. Запрос:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="o">/</span><span class="n">monitor</span><span class="o">/</span><span class="n">cgi</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
+<p>Ответ:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s2">&quot;errorCode&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="s2">&quot;18.01.2017 09:02:43&quot;</span><span class="p">,</span> <span class="s2">&quot;errorMessage&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;info&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;responseSmev&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;requestPGU&quot;</span><span class="p">:</span> <span class="mi">549</span><span class="p">,</span> <span class="s2">&quot;requestSmev&quot;</span><span class="p">:</span> <span class="mi">273</span><span class="p">,</span> <span class="s2">&quot;responsePGU&quot;</span><span class="p">:</span> <span class="mi">26</span><span class="p">}}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id7">
+<h3>Запрос с ошибкой<a class="headerlink" href="#id7" title="Ссылка на этот заголовок">¶</a></h3>
+<p>Запрос на метод, который всегда возвращает ошибку. Может пригодится для отладки ПО, тестирования. Обращение к БД не происходит. Запрос:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="o">/</span><span class="n">monitor</span><span class="o">/</span><span class="n">cgi</span><span class="o">.</span><span class="n">py</span><span class="o">/</span><span class="n">error</span>
+</pre></div>
+</div>
+<p>Ответ:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s2">&quot;errorMessage&quot;</span><span class="p">:</span> <span class="s2">&quot;Это тестовое сообщение об ошибке&quot;</span><span class="p">,</span> <span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="s2">&quot;18.01.2017 08:58:10&quot;</span><span class="p">,</span> <span class="s2">&quot;errorCode&quot;</span><span class="p">:</span> <span class="mi">42</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id8">
+<h3>Запрос с неверным указанием параметров<a class="headerlink" href="#id8" title="Ссылка на этот заголовок">¶</a></h3>
+<p>Если неправильно указать параметры запроса, то это будет обработано. Обращение к БД не происходит. Запрос:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="o">/</span><span class="n">monitor</span><span class="o">/</span><span class="n">cgi</span><span class="o">.</span><span class="n">py</span><span class="o">/</span><span class="n">foo</span>
+</pre></div>
+</div>
+<p>Ответ:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s2">&quot;errorMessage&quot;</span><span class="p">:</span> <span class="s2">&quot;Монитор вызван с недокументированным методом&quot;</span><span class="p">,</span> <span class="s2">&quot;errorCode&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="s2">&quot;18.01.2017 09:00:05&quot;</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Оглавление</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Cерверная часть</a><ul>
+<li><a class="reference internal" href="#python">Установка Python и библиотек</a></li>
+<li><a class="reference internal" href="#iis">Настройка IIS</a></li>
+<li><a class="reference internal" href="#id1">Настройка программы</a></li>
+<li><a class="reference internal" href="#id2">Запуск тестов</a></li>
+<li><a class="reference internal" href="#id3">Возможные проблемы</a></li>
+<li><a class="reference internal" href="#server-work">Описание работы</a><ul>
+<li><a class="reference internal" href="#id5">Тестовый запрос</a></li>
+<li><a class="reference internal" href="#id6">Запрос возвращающий данные</a></li>
+<li><a class="reference internal" href="#id7">Запрос с ошибкой</a></li>
+<li><a class="reference internal" href="#id8">Запрос с неверным указанием параметров</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Предыдущий раздел</h4>
+  <p class="topless"><a href="ref.html"
+                        title="предыдущая глава">Описание программы</a></p>
+  <h4>Следующий раздел</h4>
+  <p class="topless"><a href="install_client.html"
+                        title="следующая глава">Клиентская часть</a></p>
+  <div role="note" aria-label="source link">
+    <h3>Эта страница</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/install_server.txt"
+            rel="nofollow">Исходный текст</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Быстрый поиск</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Искать" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Навигация</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="Алфавитный указатель"
+             >указатель</a></li>
+        <li class="right" >
+          <a href="install_client.html" title="Клиентская часть"
+             >вперёд</a> |</li>
+        <li class="right" >
+          <a href="ref.html" title="Описание программы"
+             >назад</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Документация monitor 1.0 rc</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2017, Prostakov A.N..
+      Создано с помощью <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.5.
+    </div>
+  </body>
+</html>
