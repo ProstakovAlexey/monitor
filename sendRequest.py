@@ -33,4 +33,5 @@ def sendRequest(addr, site, method=None, port=80):
         Тип: %s,
         Значение:%s,
         Трассировка: %s""" % (Type, Value, Trace)
+    con.close()
     return result, err

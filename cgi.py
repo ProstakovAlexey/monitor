@@ -6,16 +6,16 @@ import csv
 import datetime
 import getInfo
 
-"""
-Веб-сервис, принимает название вида сведений как GET параметр,
-возвращает по нему результат или ошибку. Возможные виды сведений
-requestSmev - кол-во отравленных в СМЭВ запросов
-requestPGU - кол-во принятых с ПГУ/МФЦ заявлений
-responsePGU - кол-во возвращенных на ПГУ/МФЦ статусов
-responseSmev - кол-во ответов на СМЭВ запросы
-test - тестовый запрос, позвращает результат = 10
-
-Пример ответа (тест) http://127.0.0.1/monitor?method=test:
+""" Веб-сервис, принимает название вида сведений как GET параметр,
+        возвращает по нему результат или ошибку. Возможные виды сведений
+        requestSmev - кол-во отравленных в СМЭВ запросов
+        requestPGU - кол-во принятых с ПГУ/МФЦ заявлений
+        responsePGU - кол-во возвращенных на ПГУ/МФЦ статусов
+        responseSmev - кол-во ответов на СМЭВ запросы
+        test - тестовый запрос, позвращает результат = 10
+        Пример вызова: http://127.0.0.1:8080/monitor?method=requestPGU
+        :return: сообщение в ответ, возвращает json структуру
+        Пример ответа (тест) http://127.0.0.1:8080/monitor?method=test:
             {
                 "error": {
                     "errorCode": 0,
@@ -26,7 +26,7 @@ test - тестовый запрос, позвращает результат = 
                     "info": {"test": 10,}
                 }
             }
-Пример ответа (данные) http://127.0.0.1/monitor:
+        Пример ответа (данные) http://127.0.0.1:8080/monitor:
             {
                 "date": "16.01.2017 13:40:53",
                 "errorCode": 0,
@@ -38,11 +38,11 @@ test - тестовый запрос, позвращает результат = 
                     "responseSmev": 0
                   }
             }
-"""
+        """
 
 
 sys.stdout = codecs.getwriter("utf-8")(sys.stdout.detach())
-param = os.environ['REQUEST_URI'].split('/')
+param = os.environ['PATH_INFO'].split('/')
 
 #param = ('127.0.0.1', 'monitor', 'app.py', 'error')
 
@@ -97,7 +97,7 @@ elif len(param) > 3:
 
 result = str(response(err, data_dict)).replace('\'', '\"')
 print("Content-Type: application/json; charset=utf-8")
-print("Cache-control: max-age=600")
+print ("Cache-control: max-age=600")
 print("Content-Length:", len(result.encode('utf-8')))
 print()
 print(result)
