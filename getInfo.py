@@ -97,7 +97,7 @@ def getInfo(con):
     # Соединение к БД
     cur = con.cursor()
     try:
-        cur.execute('select COMMENT from PROTOCOL WHERE datediff(HOUR, CHANGE_DATE, GETDATE())<=100')
+        cur.execute('select COMMENT from PROTOCOL WHERE datediff(HOUR, CHANGE_DATE, GETDATE())<=1')
     except:
         err = 1
     else:
