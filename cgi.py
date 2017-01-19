@@ -6,16 +6,20 @@ import csv
 import datetime
 import getInfo
 
-""" Веб-сервис, принимает название вида сведений как GET параметр,
-        возвращает по нему результат или ошибку. Возможные виды сведений
-        requestSmev - кол-во отравленных в СМЭВ запросов
-        requestPGU - кол-во принятых с ПГУ/МФЦ заявлений
-        responsePGU - кол-во возвращенных на ПГУ/МФЦ статусов
-        responseSmev - кол-во ответов на СМЭВ запросы
-        test - тестовый запрос, позвращает результат = 10
-        Пример вызова: http://127.0.0.1:8080/monitor?method=requestPGU
-        :return: сообщение в ответ, возвращает json структуру
-        Пример ответа (тест) http://127.0.0.1:8080/monitor?method=test:
+"""
+Веб-сервис, возвращает по нему результат (виды сведений) или ошибку.
+Виды сведений:
+    - requestSmev - кол-во отравленных в СМЭВ запросов
+    - requestPGU - кол-во принятых с ПГУ/МФЦ заявлений
+    - responsePGU - кол-во возвращенных на ПГУ/МФЦ статусов
+    - responseSmev - кол-во ответов на СМЭВ запросы
+    - test - тестовый запрос, позвращает результат = 10
+
+Нормальный вызов - http://127.0.0.1/monitor/cgi.py
+Ошибка - http://127.0.0.1/monitor/cgi.py/error
+Тестовый вызов - http://127.0.0.1/monitor/cgi.py/test
+
+Пример ответа (тест):
             {
                 "error": {
                     "errorCode": 0,
@@ -26,7 +30,7 @@ import getInfo
                     "info": {"test": 10,}
                 }
             }
-        Пример ответа (данные) http://127.0.0.1:8080/monitor:
+Пример ответа (данные):
             {
                 "date": "16.01.2017 13:40:53",
                 "errorCode": 0,
@@ -38,13 +42,13 @@ import getInfo
                     "responseSmev": 0
                   }
             }
-        """
+"""
 
-
+# Нужно, чтобы отвечал в UTF-8
 sys.stdout = codecs.getwriter("utf-8")(sys.stdout.detach())
+# Получает параметры, переданные веб-сервером
 param = os.environ['PATH_INFO'].split('/')
-
-#param = ('127.0.0.1', 'monitor', 'app.py', 'error')
+# Пример списка с параметрами param = ('127.0.0.1', 'monitor', 'cgi.py', 'error')
 
 
 def response(err, data):
@@ -69,16 +73,11 @@ def response(err, data):
                         result['errorMessage'] = row[1].strip()
                         break
                 except:
-                    print('В файле с кодами ошибок попалась не форматная строка. Нужно писать: 99; Описание ошибоки')
+                    print('В файле с кодами ошибок попалась не форматная строка. Нужно писать: 99; Описание ошибки')
     else:
         result['info'] = data
     return result
 
-
-# возможно пришло 3 параметра
-# Нормальный вызов - http://127.0.0.1/monitor/app.py/
-# Тестовый вызов - http://127.0.0.1/monitor/app.py/test
-# Ошибка - http://127.0.0.1/monitor/app.py/err
 data_dict = dict()
 err = 0
 
@@ -97,7 +96,7 @@ elif len(param) > 3:
 
 result = str(response(err, data_dict)).replace('\'', '\"')
 print("Content-Type: application/json; charset=utf-8")
-print ("Cache-control: max-age=600")
+print("Cache-control: max-age=600")
 print("Content-Length:", len(result.encode('utf-8')))
 print()
 print(result)
