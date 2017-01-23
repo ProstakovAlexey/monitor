@@ -96,7 +96,8 @@ elif len(param) > 3:
 
 result = str(response(err, data_dict)).replace('\'', '\"')
 print("Content-Type: application/json; charset=utf-8")
-print("Cache-control: max-age=600")
+print("Cache-control: max-age=1200")
+print("Cache-control: min-fresh=600")
 print("Content-Length:", len(result.encode('utf-8')))
 print()
 print(result)

@@ -7,6 +7,7 @@
 import unittest
 import getInfo
 import sendRequest
+import time
 
 
 class case1(unittest.TestCase):
@@ -45,5 +46,27 @@ class case1(unittest.TestCase):
         self.assertEqual(2, result['errorCode'], 'Этот запрос на несуществующий метод, должен вернуть код 2. '
                                                  'Пришел ответ %s' % result)
 
+    def test5_data(self):
+        """Делает один запрос на реальные данные, должен вернуть errorCode=0"""
+        result, err = sendRequest.sendRequest(addr='127.0.0.1', site='monitor')
+        self.assertFalse(err, err)
+        self.assertEqual(0, result['errorCode'], 'Должен вернуть код ошибки = 0.'
+                                                 'Пришел ответ %s' % result)
 
+    def test6_cache(self):
+        """Проверяет работу кэша на IIS. Делает один запрос на реальные данные. Ждет секунду и делает втрой запрос.
+        Сравнивает время в 1-м и 2-м случае. Если кэш работает, они должны совпадать."""
+        # Первый запрос
+        result, err = sendRequest.sendRequest(addr='127.0.0.1', site='monitor')
+        self.assertFalse(err, err)
+        date1 = result['date']
+        # Ждем
+        time.sleep(1)
+        # Второй запрос
+        result, err = sendRequest.sendRequest(addr='127.0.0.1', site='monitor')
+        self.assertFalse(err, err)
+        # Сравнение
+        self.assertEqual(date1, result['date'], 'Если кэш работает, время ответа должно быть одинаковым. В первом '
+                                                'запросе пришел ответ %s, во втором %s' % (date1, result['date']))
+        print(result)
 

@@ -81,19 +81,29 @@
 <img alt="Настройка обработчика для файлов python" class="align-center" src="_images/obr.jpg" />
 </div>
 <div class="section" id="id1">
-<h2>Настройка программы<a class="headerlink" href="#id1" title="Ссылка на этот заголовок">¶</a></h2>
-<p>Чтобы монитор мог работать знать адрес БД ТИ и уметь к ней подключатся, это настраивается в файл <strong>config.ini</strong>. Файл снабжен комментариями, пожалуйста заполните его для своей системы.</p>
+<h2>Настройка кэширования для IIS<a class="headerlink" href="#id1" title="Ссылка на этот заголовок">¶</a></h2>
+<p>Программа написана так, что в ответе веб-сервиса указывается время для кэширования: максимальное - 20 минут, минимальное - 10 мин. Но для правильное работы этой функции нужно выполнить настройки в <strong>Диспетчере служб IIS</strong>:</p>
+<ol class="arabic simple">
+<li>Зайдите в диспетчер, нажмите на сайт monitor.</li>
+<li>Справа двойной щелчок на <img alt="Кэширование" src="_images/cache_1.jpg" />.</li>
+<li>Добавьте строку как на рис. ниже.</li>
+</ol>
+<img alt="Настройка кэширование для файлов python" class="align-center" src="_images/cache_2.jpg" />
 </div>
 <div class="section" id="id2">
-<h2>Запуск тестов<a class="headerlink" href="#id2" title="Ссылка на этот заголовок">¶</a></h2>
+<h2>Настройка программы<a class="headerlink" href="#id2" title="Ссылка на этот заголовок">¶</a></h2>
+<p>Чтобы монитор мог работать знать адрес БД ТИ и уметь к ней подключатся, это настраивается в файл <strong>config.ini</strong>. Файл снабжен комментариями, пожалуйста заполните его для своей системы.</p>
+</div>
+<div class="section" id="id3">
+<h2>Запуск тестов<a class="headerlink" href="#id3" title="Ссылка на этот заголовок">¶</a></h2>
 <p>После установки и настройки ПО нужно запустить тесты для проверки его работы. Набор тестов запускается на сервере, где установлен IIS.</p>
 <ol class="arabic simple">
 <li>Открой CMD и перейдите в каталог с установленным <strong>tests.py</strong>.</li>
 <li>Запустить тестовое приложение: <cite>python -m unittest tests.py</cite>. В случае успешной работы напишет - ОК, иначе ошибки.</li>
 </ol>
 </div>
-<div class="section" id="id3">
-<h2>Возможные проблемы<a class="headerlink" href="#id3" title="Ссылка на этот заголовок">¶</a></h2>
+<div class="section" id="id4">
+<h2>Возможные проблемы<a class="headerlink" href="#id4" title="Ссылка на этот заголовок">¶</a></h2>
 <ol class="arabic simple">
 <li>Тест не запустился. Пишет, что python не является программой - надо добавить его в path.</li>
 <li>Запустился, но ругается на отсутствие модуля pypyodbc - установите его, как написано выше.</li>
@@ -102,7 +112,7 @@
 </ol>
 </div>
 <div class="section" id="server-work">
-<span id="id4"></span><h2>Описание работы<a class="headerlink" href="#server-work" title="Ссылка на этот заголовок">¶</a></h2>
+<span id="id5"></span><h2>Описание работы<a class="headerlink" href="#server-work" title="Ссылка на этот заголовок">¶</a></h2>
 <dl class="docutils">
 <dt>Серверная часть представляет собой веб-сервис, работающий под управлением IIS. Взаимодействие с IIS выполняется используя CGI, взаимодействие с клиентом - REST сервис, ответ JSON структура. После развертывания веб-сервис ожидает запроса по адресу <a class="reference external" href="http://IP/monitor/cgi.py">http://IP/monitor/cgi.py</a>. При получении запроса происходит обращение в БД ТИ и извлекается протокол за последний час, так если запрос пришел в 9:54, то будет извлечен протокол с 8:54 до 9:54. Операция довольно трудоемкая, поэтому предусмотрены следующие особенности:</dt>
 <dd><ul class="first last simple">
@@ -114,8 +124,8 @@
 </dd>
 </dl>
 <p>Сервис рассчитан на  взаимодействие с клиентом (из состава ПО), но далее приведу примеры запросов, их можно использовать интеграции со сторонним ПО или дополнительной проверки работы. Запросы можно выполнять прямо из браузера, к запросам можно переходить только если выполнили установку и успешное тестирование.</p>
-<div class="section" id="id5">
-<h3>Тестовый запрос<a class="headerlink" href="#id5" title="Ссылка на этот заголовок">¶</a></h3>
+<div class="section" id="id6">
+<h3>Тестовый запрос<a class="headerlink" href="#id6" title="Ссылка на этот заголовок">¶</a></h3>
 <p>Он Всегда возвращает одинаковое значение, обращение к БД не происходит. Запрос:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="o">/</span><span class="n">monitor</span><span class="o">/</span><span class="n">cgi</span><span class="o">.</span><span class="n">py</span><span class="o">/</span><span class="n">test</span>
 </pre></div>
@@ -125,8 +135,8 @@
 </pre></div>
 </div>
 </div>
-<div class="section" id="id6">
-<h3>Запрос возвращающий данные<a class="headerlink" href="#id6" title="Ссылка на этот заголовок">¶</a></h3>
+<div class="section" id="id7">
+<h3>Запрос возвращающий данные<a class="headerlink" href="#id7" title="Ссылка на этот заголовок">¶</a></h3>
 <p>Возвращает данные, выполняет запрос к БД. Запрос:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="o">/</span><span class="n">monitor</span><span class="o">/</span><span class="n">cgi</span><span class="o">.</span><span class="n">py</span>
 </pre></div>
@@ -136,8 +146,8 @@
 </pre></div>
 </div>
 </div>
-<div class="section" id="id7">
-<h3>Запрос с ошибкой<a class="headerlink" href="#id7" title="Ссылка на этот заголовок">¶</a></h3>
+<div class="section" id="id8">
+<h3>Запрос с ошибкой<a class="headerlink" href="#id8" title="Ссылка на этот заголовок">¶</a></h3>
 <p>Запрос на метод, который всегда возвращает ошибку. Может пригодится для отладки ПО, тестирования. Обращение к БД не происходит. Запрос:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="o">/</span><span class="n">monitor</span><span class="o">/</span><span class="n">cgi</span><span class="o">.</span><span class="n">py</span><span class="o">/</span><span class="n">error</span>
 </pre></div>
@@ -147,8 +157,8 @@
 </pre></div>
 </div>
 </div>
-<div class="section" id="id8">
-<h3>Запрос с неверным указанием параметров<a class="headerlink" href="#id8" title="Ссылка на этот заголовок">¶</a></h3>
+<div class="section" id="id9">
+<h3>Запрос с неверным указанием параметров<a class="headerlink" href="#id9" title="Ссылка на этот заголовок">¶</a></h3>
 <p>Если неправильно указать параметры запроса, то это будет обработано. Обращение к БД не происходит. Запрос:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="o">/</span><span class="n">monitor</span><span class="o">/</span><span class="n">cgi</span><span class="o">.</span><span class="n">py</span><span class="o">/</span><span class="n">foo</span>
 </pre></div>
@@ -172,14 +182,15 @@
 <li><a class="reference internal" href="#">Cерверная часть</a><ul>
 <li><a class="reference internal" href="#python">Установка Python и библиотек</a></li>
 <li><a class="reference internal" href="#iis">Настройка IIS</a></li>
-<li><a class="reference internal" href="#id1">Настройка программы</a></li>
-<li><a class="reference internal" href="#id2">Запуск тестов</a></li>
-<li><a class="reference internal" href="#id3">Возможные проблемы</a></li>
+<li><a class="reference internal" href="#id1">Настройка кэширования для IIS</a></li>
+<li><a class="reference internal" href="#id2">Настройка программы</a></li>
+<li><a class="reference internal" href="#id3">Запуск тестов</a></li>
+<li><a class="reference internal" href="#id4">Возможные проблемы</a></li>
 <li><a class="reference internal" href="#server-work">Описание работы</a><ul>
-<li><a class="reference internal" href="#id5">Тестовый запрос</a></li>
-<li><a class="reference internal" href="#id6">Запрос возвращающий данные</a></li>
-<li><a class="reference internal" href="#id7">Запрос с ошибкой</a></li>
-<li><a class="reference internal" href="#id8">Запрос с неверным указанием параметров</a></li>
+<li><a class="reference internal" href="#id6">Тестовый запрос</a></li>
+<li><a class="reference internal" href="#id7">Запрос возвращающий данные</a></li>
+<li><a class="reference internal" href="#id8">Запрос с ошибкой</a></li>
+<li><a class="reference internal" href="#id9">Запрос с неверным указанием параметров</a></li>
 </ul>
 </li>
 </ul>
