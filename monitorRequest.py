@@ -41,6 +41,6 @@ if __name__ == "__main__":
             res = -1
         else:
             res = result['info'][args.m]
-    logging.info('Программа работу закончила')
+    logging.info('Программа работу закончила. Результат %s' % result)
     print(res)
     exit(0)

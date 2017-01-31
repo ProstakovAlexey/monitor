@@ -5,6 +5,7 @@ import os
 import csv
 import datetime
 import getInfo
+import json
 
 """
 Веб-сервис, возвращает по нему результат (виды сведений) или ошибку.
@@ -78,12 +79,50 @@ def response(err, data):
         result['info'] = data
     return result
 
+
+def save_json_cache(json_data):
+    """
+    Сохраняет в кэш результат
+    :param json:
+    :return:
+    """
+    cache_name = 'cache.json'
+    with open(cache_name, 'w', encoding='utf-8') as json_file:
+        json_file.write(json.dumps(json_data, sort_keys=True, indent=4, separators=(',', ': ')))
+
+
 data_dict = dict()
 err = 0
+result = None
+
 
 if len(param) == 3:
     # Пустой, значить надо ответить все
-    data_dict, err = getInfo.getResult()
+    # Проверить, есть ли старый кэш
+    cache_name = 'cache.json'
+    if os.access(cache_name, os.F_OK):
+        # Прочитать его
+        try:
+            with open(cache_name, 'r', encoding='utf-8') as json_file:
+                json_cache = json.loads(json_file.read(), encoding='utf-8')
+            t = datetime.datetime.strptime(json_cache['date'], '%d.%m.%Y %H:%M:%S')
+            if t + datetime.timedelta(minutes=30) < datetime.datetime.now():
+                # Кэш устарел, надо сделать новый запрос и новый кэш
+                data_dict, err = getInfo.getResult()
+                save_json_cache(response(err, data_dict))
+            else:
+                # Кэш найден и он не страрый, берем его
+                result = json_cache
+        except:
+            # Прочитать не удалось, делаем новый кэш
+            data_dict, err = getInfo.getResult()
+            save_json_cache(response(err, data_dict))
+    else:
+        # Файла кэша нет, делаем его
+        data_dict, err = getInfo.getResult()
+        save_json_cache(response(err, data_dict))
+
+
 elif len(param) > 3:
     method = param[3]
     if method == 'test':
@@ -93,8 +132,12 @@ elif len(param) > 3:
         err = 42
     else:
         err = 2
-
-result = str(response(err, data_dict)).replace('\'', '\"')
+# Проверить, возможно результат взяли из кэше
+if result:
+    result = json.dumps(result, sort_keys=True, indent=4, separators=(',', ': '))
+else:
+    # Получим результат запросом
+    result = json.dumps(response(err, data_dict), sort_keys=True, indent=4, separators=(',', ': '))
 print("Content-Type: application/json; charset=utf-8")
 print("Cache-control: max-age=1200")
 print("Cache-control: min-fresh=600")
