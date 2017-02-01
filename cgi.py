@@ -15,6 +15,8 @@ import json
     - responsePGU - кол-во возвращенных на ПГУ/МФЦ статусов
     - responseSmev - кол-во ответов на СМЭВ запросы
     - test - тестовый запрос, позвращает результат = 10
+    - loadToASP - Выгрузка с ТИ
+    - loadToTI - загрузка на ТИ
 
 Нормальный вызов - http://127.0.0.1/monitor/cgi.py
 Ошибка - http://127.0.0.1/monitor/cgi.py/error
@@ -40,7 +42,9 @@ import json
                     "requestPGU": 584,
                     "requestSmev": 534,
                     "responsePGU": 0,
-                    "responseSmev": 0
+                    "responseSmev": 0,
+                    "loadToASP": 0,
+                    "loadToTI": 0
                   }
             }
 """

@@ -94,6 +94,8 @@ def getInfo(con):
     res = r'Запрос к методу'
     zaiv = r'к методу SetRequest'
     status = r'Статус по заявке'
+    load_to_asp = r'Выгрузка с ТИ'
+    load_to_ti = r'Завершена загрузка на ТИ'
     # Соединение к БД
     cur = con.cursor()
     try:
@@ -106,7 +108,9 @@ def getInfo(con):
             'requestSmev': 0,
             'requestPGU': 0,
             'responsePGU': 0,
-            'responseSmev': 0
+            'responseSmev': 0,
+            'loadToASP': 0,
+            'loadToTI': 0
             }
         # В курсоре список строк протокола за последний час, переберем его
         for line in cur.fetchall():
@@ -118,6 +122,10 @@ def getInfo(con):
                 result['requestPGU'] += 1
             elif line[0].find(status) > -1:
                 result['responsePGU'] += 1
+            elif line[0].find(load_to_asp) > -1:
+                result['loadToASP'] += 1
+            elif line[0].find(load_to_ti) > -1:
+                result['loadToTI'] += 1
     return result, err
 
 

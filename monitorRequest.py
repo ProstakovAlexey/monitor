@@ -18,7 +18,9 @@ if __name__ == "__main__":
                                                                'requestSmev - запросы в СМЭВ; '
                                                                'requestPGU  - заявления от ПГУ/МФЦ; '
                                                                'responsePGU - ответы на заявления ПГУ/МФЦ; '
-                                                               'responseSmev - ответы на СМЭВ запросы')
+                                                               'responseSmev - ответы на СМЭВ запросы; '
+                                                               'loadToASP - получение инф. с ТИ в АСП; '
+                                                               'loadToTI - отправка инф. из АСП на ТИ.')
 
     logging.basicConfig(filename='monitorRequest.log', filemode='a', level=logging.DEBUG,
                         format='%(asctime)s %(levelname)s: %(message)s')
@@ -31,16 +33,17 @@ if __name__ == "__main__":
     else:
         port = int(args.p)
     # Проверяем входные параметры
-    if not (args.m in ('requestSmev', 'requestPGU', 'responsePGU', 'responseSmev')):
+    if not (args.m in ('requestSmev', 'requestPGU', 'responsePGU', 'responseSmev', 'loadToASP', 'loadToTI')):
         print('Программа вызвана с неправильным видом сведений, используйте -h для справки')
         logging.info('Программа вызвана с неправильным видом сведений')
         exit(1)
     else:
         result, err = sendRequest.sendRequest(addr=args.a, port=port, site=args.s)
+        logging.info('Получен результат от сервиса: %s. Ошибки: %s' % (result, err))
         if err or result['errorCode']:
             res = -1
         else:
             res = result['info'][args.m]
-    logging.info('Программа работу закончила. Результат %s' % result)
+    logging.info('Программа работу закончила')
     print(res)
     exit(0)
