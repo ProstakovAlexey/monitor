@@ -48,6 +48,35 @@
             
   <div class="section" id="monitor">
 <h1>Руководство пользователя системы мониторинга Monitor<a class="headerlink" href="#monitor" title="Ссылка на этот заголовок">¶</a></h1>
+<dl class="docutils">
+<dt>Программа Monitor предназначена для мониторинга точки интеграции(ТИ) совместно с системой Zabbix. Может сообщать следующие параметры ТИ:</dt>
+<dd><ul class="first last">
+<li><p class="first">кол-во СМЭВ запросов, направленных ТИ;</p>
+</li>
+<li><p class="first">кол-во предоставленных ТИ ответов на СМЭВ запросы, пришедших из сторонних ИС;</p>
+</li>
+<li><p class="first">кол-во заявлений ПГУ/МФЦ полученных ТИ;</p>
+</li>
+<li><dl class="first docutils">
+<dt>кол-во ответов на заявления ПГУ/МФЦ;</dt>
+<dd><ul class="first last simple">
+<li>кол-во обращений для получение инф. с ТИ в АСП;</li>
+<li>кол-во обращений для отправка инф. из АСП на ТИ.</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+<p>Программа написана на языке python3 и использует для работы веб-сервер IIS. Я постарался писать код максимально просто и понятно, снабжая его комментариями.
+Надеюсь, что будут желающие в нем разбираться, вносить изменения. Так же программа снабжена документацией, написанной на sphinx, ее откоплированный вариант лежит в папке docbuildhtml.
+Перед использование рекомендую ознакомится с документацией, она совсем не большая.</p>
+<p>Замечания и пожелания по работе, а так же исправления можете высылать мне на электронную почту.</p>
+<p>С уважением, Простаков Алексей.
+<a class="reference external" href="mailto:alexey&#37;&#52;&#48;tulalinux&#46;ru">alexey<span>&#64;</span>tulalinux<span>&#46;</span>ru</a></p>
+<div class="section" id="id1">
+<h2>Содержание<a class="headerlink" href="#id1" title="Ссылка на этот заголовок">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="ref.html">Описание программы</a><ul>
@@ -74,6 +103,7 @@
 </ul>
 </div>
 </div>
+</div>
 
 
           </div>
@@ -81,6 +111,14 @@
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
+  <h3><a href="#">Оглавление</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Руководство пользователя системы мониторинга Monitor</a><ul>
+<li><a class="reference internal" href="#id1">Содержание</a></li>
+</ul>
+</li>
+</ul>
+
   <h4>Следующий раздел</h4>
   <p class="topless"><a href="ref.html"
                         title="следующая глава">Описание программы</a></p>

@@ -7,6 +7,7 @@ import platform
 import pypyodbc
 import os
 import configparser
+import datetime
 
 
 def readConfig(file="config.ini"):
@@ -83,7 +84,7 @@ def getConnection (DB):
 
 def getInfo(con):
     """
-    Извлекает из БД протокол за последний час
+    Извлекает из БД протокол за предыдущий час
     :param con: соединение с БД
     :return: структура данных
     """
@@ -98,8 +99,13 @@ def getInfo(con):
     load_to_ti = r'Завершена загрузка на ТИ'
     # Соединение к БД
     cur = con.cursor()
+    # Получаем даты
+    now = datetime.datetime.today()
+    date_start = datetime.datetime(now.year, now.month, now.day, now.hour - 1, 0, 0)
+    date_end = datetime.datetime(now.year, now.month, now.day, now.hour - 1, 59, 59)
+
     try:
-        cur.execute('select COMMENT from PROTOCOL WHERE datediff(HOUR, CHANGE_DATE, GETDATE())<=1')
+        cur.execute('select COMMENT from PROTOCOL WHERE CHANGE_DATE BETWEEN ? AND ?', (date_start, date_end))
     except:
         err = 1
     else:
