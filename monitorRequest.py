@@ -3,6 +3,8 @@
 import sendRequest
 import argparse
 import logging
+import time
+import os
 
 
 """ Отправляет запрос на получение данных из протокола. Метода получает как входной параметр, результат запроса
@@ -38,6 +40,19 @@ if __name__ == "__main__":
         logging.info('Программа вызвана с неправильным видом сведений')
         exit(1)
     else:
+        # Проверим, как получить результат через веб-сервис или файл
+        if port == 0:
+            # Получаем через файл
+            err = 0
+            try:
+                result = open(name=args.a, mode='r', encoding='utf-8').read()
+                # Если файл старше 60 мин, то это ошибка
+                if (time.time() - os.path.getmtime(args.a))/60 < 60:
+                    logging.error('Файл %s старше 60 мин, не сработала передача по FTP' % args.a)
+                    err = 1
+            except:
+                err = 1
+                logging.critical('Не смог прочитать файл %s' % args.a)
         result, err = sendRequest.sendRequest(addr=args.a, port=port, site=args.s)
         logging.info('Получен результат от сервиса: %s. Ошибки: %s' % (result, err))
         if err or result['errorCode']:

@@ -13,10 +13,11 @@ import datetime
 def readConfig(file="config.ini"):
     '''
     :param file: имя файла конфигурации
-    :return: словарь настроек к БД, err
+    :return: словарь настроек к БД, FTP, err
     '''
     err = 0
     BD = dict()
+    FTP = dict()
     if os.access(file, os.F_OK):
         # выполняется если найден конфигурационный файл
         fp = open(file, encoding='utf-8', mode='r')
@@ -38,7 +39,11 @@ def readConfig(file="config.ini"):
                 BD['user'] = i.get('user', fallback='sa')
                 BD['port'] = i.get('port', fallback='1433')
                 BD['password'] = i.get('password', fallback='111')
-        # проверим заполнение сведений об БД
+            elif section.count('FTP'):
+                FTP['user'] = i.get('user', fallback='')
+                FTP['password'] = i.get('password', fallback='111')
+                FTP['address'] = i.get('address', fallback='')
+                # проверим заполнение сведений об БД
         if len(BD.keys()) == 0:
             print('В конфигурационном файле отсутствует обязательная секция о базн данных.')
             err += 1
@@ -51,7 +56,7 @@ def readConfig(file="config.ini"):
     else:
         print("Ошибка! Не найден конфигурационный файл")
         err = 1
-    return BD, err
+    return BD, FTP, err
 
 
 def getConnection (DB):
@@ -142,7 +147,7 @@ def getResult():
     """
     err_сode = 0
     result = dict()
-    db, err = readConfig()
+    db, ftp, err = readConfig()
     if err:
         # Не удалось прочитать файл
         err_сode = 10
