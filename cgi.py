@@ -54,7 +54,7 @@ def get_err_message(dict_res):
             lines = csv.reader(csvfile, delimiter=';')
             for row in lines:
                 try:
-                    if int(row[0]) == err:
+                    if int(row[0]) == dict_res['errorCode']:
                         # Нашли соответствие кода
                         dict_res['errorMessage'] = row[1].strip()
                         break
