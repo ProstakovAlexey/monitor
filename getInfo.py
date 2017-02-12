@@ -142,7 +142,7 @@ def getResult():
     """
     err_сode = 0
     result = dict()
-    db, err = readConfig()
+    db, err = readConfig(os.path.join(os.getcwd(), 'config.ini'))
     if err:
         # Не удалось прочитать файл
         err_сode = 10

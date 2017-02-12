@@ -85,7 +85,8 @@ def save_json_cache(json_data):
     :param json:
     :return:
     """
-    cache_name = 'cache.json'
+    # Делаю абсолютный путь, исходя из того, где лежит данный файл
+    cache_name = os.path.join(os.getcwd(), 'cache.json')
     with open(cache_name, 'w', encoding='utf-8') as json_file:
         json_file.write(json.dumps(json_data, sort_keys=True, indent=4, separators=(',', ': ')))
 
@@ -100,7 +101,7 @@ err = 0
 result = None
 # Пустой, значить надо ответить все
 if len(param) == 3:
-    cache_name = 'cache.json'
+    cache_name = os.path.join(os.getcwd(), 'cache.json')
     # Проверить, есть ли кэш и не старше ли он 10 минут
     if os.access(cache_name, os.F_OK) and ((time.time() - os.path.getmtime(cache_name))/60 < 10):
         # Прочитать его
