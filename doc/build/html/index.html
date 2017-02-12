@@ -50,26 +50,25 @@
 <h1>Руководство пользователя системы мониторинга Monitor<a class="headerlink" href="#monitor" title="Ссылка на этот заголовок">¶</a></h1>
 <dl class="docutils">
 <dt>Программа Monitor предназначена для мониторинга точки интеграции(ТИ) совместно с системой Zabbix. Может сообщать следующие параметры ТИ:</dt>
-<dd><ul class="first last">
-<li><p class="first">кол-во СМЭВ запросов, направленных ТИ;</p>
-</li>
-<li><p class="first">кол-во предоставленных ТИ ответов на СМЭВ запросы, пришедших из сторонних ИС;</p>
-</li>
-<li><p class="first">кол-во заявлений ПГУ/МФЦ полученных ТИ;</p>
-</li>
-<li><dl class="first docutils">
-<dt>кол-во ответов на заявления ПГУ/МФЦ;</dt>
 <dd><ul class="first last simple">
+<li>кол-во СМЭВ запросов, направленных ТИ;</li>
+<li>кол-во предоставленных ТИ ответов на СМЭВ запросы, пришедших из сторонних ИС;</li>
+<li>кол-во заявлений ПГУ/МФЦ полученных ТИ;</li>
+<li>кол-во ответов на заявления ПГУ/МФЦ;</li>
 <li>кол-во обращений для получение инф. с ТИ в АСП;</li>
 <li>кол-во обращений для отправка инф. из АСП на ТИ.</li>
 </ul>
 </dd>
 </dl>
-</li>
+<p>Программа написана на языке python3, для работы соединяется с БД и извлекает из нее часть протокола. Анализирует  и
+передает в Zabbix. Для передачи может использоваться:</p>
+<blockquote>
+<div><ul class="simple">
+<li>веб-сервис, развернутый на IIS;</li>
+<li>запись файла на FTP.</li>
 </ul>
-</dd>
-</dl>
-<p>Программа написана на языке python3 и использует для работы веб-сервер IIS. Я постарался писать код максимально просто и понятно, снабжая его комментариями.
+</div></blockquote>
+<p>Я постарался писать код максимально просто и понятно, снабжая его комментариями.
 Надеюсь, что будут желающие в нем разбираться, вносить изменения. Так же программа снабжена документацией, написанной на sphinx, ее откоплированный вариант лежит в папке docbuildhtml.
 Перед использование рекомендую ознакомится с документацией, она совсем не большая.</p>
 <p>Замечания и пожелания по работе, а так же исправления можете высылать мне на электронную почту.</p>
@@ -87,11 +86,12 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="install_server.html">Cерверная часть</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="install_server.html#python">Установка Python и библиотек</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install_server.html#iis">Настройка IIS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install_server.html#ftp">Работа через FTP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install_server.html#iis">Настройка IIS (для веб-сервиса)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="install_server.html#id1">Настройка программы</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install_server.html#id2">Запуск тестов</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install_server.html#id2">Запуск тестов (для веб-сервиса)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="install_server.html#id3">Возможные проблемы</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install_server.html#server-work">Описание работы</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install_server.html#server-work">Описание работы (для веб-сервиса)</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="install_client.html">Клиентская часть</a><ul>

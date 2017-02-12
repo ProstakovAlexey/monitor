@@ -65,9 +65,22 @@
 он скачает пакет, далее перенесите пакет на сервер и выполните там:
 <cite>pip install полный_путь_к_pypyodbc</cite></li>
 </ol>
+<p>Далее Вы должны выбрать один из 2-х способов взаимодействия:</p>
+<ol class="arabic simple">
+<li>Через веб-сервис. Это быстро и надежно, немного сложнее настраивать и надо иметь IP адрес доступный для Zabbix.</li>
+<li>Через передачу данных на FTP. Способ подходит для тех, к кого постоянного IP нет или на нем 80 порт закрыт. При этом требуется доступ к FТP Социнформех.</li>
+</ol>
+</div>
+<div class="section" id="ftp">
+<h2>Работа через FTP<a class="headerlink" href="#ftp" title="Ссылка на этот заголовок">¶</a></h2>
+<ol class="arabic simple">
+<li>Нужно стакачать из репозитария программу.</li>
+<li>В конфигурационном файле заполнить данные про FTP сервер.</li>
+<li>Настроить запуск файла <cite>ftp.py</cite> каждый час: в 10:00:10, 11:00:10 и т.д. через расписание Windows.</li>
+</ol>
 </div>
 <div class="section" id="iis">
-<h2>Настройка IIS<a class="headerlink" href="#iis" title="Ссылка на этот заголовок">¶</a></h2>
+<h2>Настройка IIS (для веб-сервиса)<a class="headerlink" href="#iis" title="Ссылка на этот заголовок">¶</a></h2>
 <ol class="arabic simple">
 <li>Установить CGI для IIS, как написано тут - <a class="reference external" href="http://netdot.co/2015/03/09/flask-on-iis/">http://netdot.co/2015/03/09/flask-on-iis/</a></li>
 <li>В папку IIS wwwroot добавить папку monitor, скопируйте туда файлы от серверной части - <a class="reference internal" href="ref.html#id3"><span class="std std-ref">Состав</span></a>.</li>
@@ -85,7 +98,7 @@
 <p>Чтобы монитор мог работать знать адрес БД ТИ и уметь к ней подключатся, это настраивается в файл <strong>config.ini</strong>. Файл снабжен комментариями, пожалуйста заполните его для своей системы.</p>
 </div>
 <div class="section" id="id2">
-<h2>Запуск тестов<a class="headerlink" href="#id2" title="Ссылка на этот заголовок">¶</a></h2>
+<h2>Запуск тестов (для веб-сервиса)<a class="headerlink" href="#id2" title="Ссылка на этот заголовок">¶</a></h2>
 <p>После установки и настройки ПО нужно запустить тесты для проверки его работы. Набор тестов запускается на сервере, где установлен IIS.</p>
 <ol class="arabic simple">
 <li>Открой CMD и перейдите в каталог с установленным <strong>tests.py</strong>.</li>
@@ -102,7 +115,7 @@
 </ol>
 </div>
 <div class="section" id="server-work">
-<span id="id4"></span><h2>Описание работы<a class="headerlink" href="#server-work" title="Ссылка на этот заголовок">¶</a></h2>
+<span id="id4"></span><h2>Описание работы (для веб-сервиса)<a class="headerlink" href="#server-work" title="Ссылка на этот заголовок">¶</a></h2>
 <dl class="docutils">
 <dt>Серверная часть представляет собой веб-сервис, работающий под управлением IIS. Взаимодействие с IIS выполняется используя CGI, взаимодействие с клиентом - REST сервис, ответ JSON структура. После развертывания веб-сервис ожидает запроса по адресу <a class="reference external" href="http://IP/monitor/cgi.py">http://IP/monitor/cgi.py</a>. При получении запроса происходит обращение в БД ТИ и извлекается протокол за <strong>предыдущий час</strong>. Так если запрос пришел в 9:54, то будет извлечен протокол с 8:00 до 8:59. Операция довольно трудоемкая, поэтому предусмотрены следующие особенности:</dt>
 <dd><ul class="first last simple">
@@ -183,11 +196,12 @@
   <ul>
 <li><a class="reference internal" href="#">Cерверная часть</a><ul>
 <li><a class="reference internal" href="#python">Установка Python и библиотек</a></li>
-<li><a class="reference internal" href="#iis">Настройка IIS</a></li>
+<li><a class="reference internal" href="#ftp">Работа через FTP</a></li>
+<li><a class="reference internal" href="#iis">Настройка IIS (для веб-сервиса)</a></li>
 <li><a class="reference internal" href="#id1">Настройка программы</a></li>
-<li><a class="reference internal" href="#id2">Запуск тестов</a></li>
+<li><a class="reference internal" href="#id2">Запуск тестов (для веб-сервиса)</a></li>
 <li><a class="reference internal" href="#id3">Возможные проблемы</a></li>
-<li><a class="reference internal" href="#server-work">Описание работы</a><ul>
+<li><a class="reference internal" href="#server-work">Описание работы (для веб-сервиса)</a><ul>
 <li><a class="reference internal" href="#id5">Тестовый запрос</a></li>
 <li><a class="reference internal" href="#id6">Запрос возвращающий данные</a></li>
 <li><a class="reference internal" href="#id7">Запрос с ошибкой</a></li>

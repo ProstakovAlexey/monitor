@@ -52,10 +52,9 @@
 <div class="section" id="id2">
 <h2>Установка<a class="headerlink" href="#id2" title="Ссылка на этот заголовок">¶</a></h2>
 <p>Программа написано и была проверена на python 3.5, но я думаю она будет работать под любым python3.</p>
-<ol class="arabic simple">
-<li>Установите python3 (<a class="reference external" href="https://www.python.org/downloads/">https://www.python.org/downloads/</a>). При установке обратите внимание, что надо ставить для всех пользователей и добавить python в <strong>Path</strong>.</li>
-<li>Создайте произвольную папку и скопируйте туда файлы клиентской части - <a class="reference internal" href="ref.html#id3"><span class="std std-ref">Состав</span></a>.</li>
-</ol>
+<p>1. Установите python3 (<a class="reference external" href="https://www.python.org/downloads/">https://www.python.org/downloads/</a>). При установке обратите внимание, что надо ставить для всех
+пользователей и добавить python в <strong>Path</strong>.
+2. Создайте произвольную папку и скопируйте туда файлы клиентской части - <a class="reference internal" href="ref.html#id3"><span class="std std-ref">Состав</span></a>.</p>
 </div>
 <div class="section" id="id3">
 <h2>Проверка работы<a class="headerlink" href="#id3" title="Ссылка на этот заголовок">¶</a></h2>
@@ -82,13 +81,24 @@
 </pre></div>
 </div>
 </li>
-<li><p class="first">Попробуйте запрос на виды сведений, например на кол-во запросов в СМЭВ: <cite>python monitorRequest.py -a 192.168.0.104 -p 80 -s monitor -m requestSmev</cite>. Результат - число больше 0, если -1 - по возникла ошибка.</p>
+<li><p class="first">Попробуйте запрос на виды сведений, например на кол-во запросов в СМЭВ:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">monitorRequest</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">a</span> <span class="mf">192.168</span><span class="o">.</span><span class="mf">0.104</span> <span class="o">-</span><span class="n">p</span> <span class="mi">80</span> <span class="o">-</span><span class="n">s</span> <span class="n">monitor</span> <span class="o">-</span><span class="n">m</span> <span class="n">requestSmev</span>
+</pre></div>
+</div>
 </li>
 </ol>
+<p>Результат - число больше 0, если -1 - по возникла ошибка.
+5. Если Вы используете передачу через ftp, то команда для получения чтения данных:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">monitorRequest</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">a</span> <span class="n">Z</span><span class="p">:</span>\<span class="n">Tumen</span>\<span class="n">monitor</span><span class="o">.</span><span class="n">json</span> <span class="o">-</span><span class="n">p</span> <span class="mi">1</span> <span class="o">-</span><span class="n">s</span> <span class="n">monitor</span> <span class="o">-</span><span class="n">m</span> <span class="n">requestSmev</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="id4">
 <h2>Работа клиентской части<a class="headerlink" href="#id4" title="Ссылка на этот заголовок">¶</a></h2>
-<p>Ниже приведу примеры вызова клиентской программы, которые Вы можете использовать для интеграции с Zabbix и подобными системами. Обратите внимание, что данные кэшируются, чтобы избежать лишней нагрузки на сервер. Данные возвращаются за последний час, т.е. если Вы вызвали программу в 11:34, то придут данные с 10:34-11:34, более подробно можете посмотреть в <a class="reference internal" href="install_server.html#server-work"><span class="std std-ref">Описание работы</span></a>.</p>
+<p>Ниже приведу примеры вызова клиентской программы, которые Вы можете использовать для интеграции с Zabbix и подобными
+системами. Обратите внимание, что данные кэшируются, чтобы избежать лишней нагрузки на сервер. Данные возвращаются за
+последний час, т.е. если Вы вызвали программу в 11:34, то придут данные с 10:34-11:34, более подробно можете посмотреть
+в <a class="reference internal" href="install_server.html#server-work"><span class="std std-ref">Описание работы (для веб-сервиса)</span></a>.</p>
 </div>
 </div>
 
