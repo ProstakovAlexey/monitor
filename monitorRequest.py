@@ -3,6 +3,8 @@
 import sendRequest
 import argparse
 import logging
+import time
+import os
 
 
 """ Отправляет запрос на получение данных из протокола. Метода получает как входной параметр, результат запроса
@@ -11,8 +13,8 @@ import logging
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Программа делает запрос к сервису мониторинга ТИ')
-    parser.add_argument('-a', metavar='addr', type=str, help='Имя или IP адрес сервера для запроса')
-    parser.add_argument('-p', metavar='port', type=int, help='Порт сервера для запроса')
+    parser.add_argument('-a', metavar='addr', type=str, help='Имя файла или IP адрес сервера для запроса')
+    parser.add_argument('-p', metavar='port', type=int, help='Порт сервера для запроса. Если через файл, то = 1')
     parser.add_argument('-s', metavar='site', type=str, help='Сайт')
     parser.add_argument('-m', metavar='method', type=str, help='Вид сведений. Возможные значения: '
                                                                'requestSmev - запросы в СМЭВ; '
@@ -38,6 +40,19 @@ if __name__ == "__main__":
         logging.info('Программа вызвана с неправильным видом сведений')
         exit(1)
     else:
+        # Проверим, как получить результат через веб-сервис или файл
+        if port == 1:
+            # Получаем через файл
+            err = 0
+            try:
+                result = open(name=args.a, mode='r', encoding='utf-8').read()
+                # Если файл старше 60 мин, то это ошибка
+                if (time.time() - os.path.getmtime(args.a))/60 < 60:
+                    logging.error('Файл %s старше 60 мин, не сработала передача по FTP' % args.a)
+                    err = 1
+            except:
+                err = 1
+                logging.critical('Не смог прочитать файл %s' % args.a)
         result, err = sendRequest.sendRequest(addr=args.a, port=port, site=args.s)
         logging.info('Получен результат от сервиса: %s. Ошибки: %s' % (result, err))
         if err or result['errorCode']:
