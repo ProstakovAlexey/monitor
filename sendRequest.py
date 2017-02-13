@@ -16,13 +16,13 @@ def sendRequest(addr, site, method=None, port=80):
     """
     err = None
     result = None
-    con = http.client.HTTPConnection(addr, port)
     # пытаемся отправить запрос
     if method:
         url = '/%s/cgi.py/%s' % (site, method)
     else:
         url = '/%s/cgi.py' % site
     try:
+        con = http.client.HTTPConnection(addr, port)
         con.request("GET", url)
         result = con.getresponse().read()
         result = result.decode('utf-8')

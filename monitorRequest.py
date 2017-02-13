@@ -41,9 +41,10 @@ if __name__ == "__main__":
         exit(1)
     else:
         # Проверим, как получить результат через веб-сервис или файл
+        result = None
+        err = 0
         if port == 1:
             # Получаем через файл
-            err = 0
             try:
                 result = open(name=args.a, mode='r', encoding='utf-8').read()
                 # Если файл старше 60 мин, то это ошибка
@@ -53,8 +54,10 @@ if __name__ == "__main__":
             except:
                 err = 1
                 logging.critical('Не смог прочитать файл %s' % args.a)
-        result, err = sendRequest.sendRequest(addr=args.a, port=port, site=args.s)
-        logging.info('Получен результат от сервиса: %s. Ошибки: %s' % (result, err))
+        else:
+            # Получаем через веб-сервис
+            result, err = sendRequest.sendRequest(addr=args.a, port=port, site=args.s)
+        logging.info('Получен результат: %s. Ошибки: %s' % (result, err))
         if err or result['errorCode']:
             res = -1
         else:
