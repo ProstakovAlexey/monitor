@@ -5,6 +5,7 @@ import argparse
 import logging
 import time
 import os
+import json
 
 
 """ Отправляет запрос на получение данных из протокола. Метода получает как входной параметр, результат запроса
@@ -46,9 +47,10 @@ if __name__ == "__main__":
         if port == 1:
             # Получаем через файл
             try:
-                result = open(name=args.a, mode='r', encoding='utf-8').read()
+                result = open(args.a, mode='r', encoding='utf-8').read()
+                result = json.loads(result, encoding='utf-8')
                 # Если файл старше 60 мин, то это ошибка
-                if (time.time() - os.path.getmtime(args.a))/60 < 60:
+                if (time.time() - os.path.getmtime(args.a))/60 > 60:
                     logging.error('Файл %s старше 60 мин, не сработала передача по FTP' % args.a)
                     err = 1
             except:
