@@ -24,7 +24,7 @@ if __name__ == "__main__":
                                                                'loadToASP - получение инф. с ТИ в АСП; '
                                                                'loadToTI - отправка инф. из АСП на ТИ.')
 
-    logging.basicConfig(filename='monitorRequest.log', filemode='a', level=logging.DEBUG,
+    logging.basicConfig(filename=os.path.join(os.getcwd(), 'monitorRequest.log'), filemode='a', level=logging.DEBUG,
                         format='%(asctime)s %(levelname)s: %(message)s')
     logging.info('Программа запущена')
     args = parser.parse_args()
