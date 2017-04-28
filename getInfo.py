@@ -8,6 +8,7 @@ import pypyodbc
 import os
 import configparser
 import datetime
+import re
 
 
 def readConfig(file="config.ini"):
@@ -98,6 +99,7 @@ def getInfo(con):
     # определение настроечных констант
     req = r'Регламент:'
     res = r'Запрос к методу'
+    zaiv_1 = re.compile(r'Заявка с номером .* принята успешно.')
     zaiv = r'к методу SetRequest'
     status = r'Статус по заявке'
     load_to_asp = r'Выгрузка с ТИ'
@@ -137,6 +139,10 @@ def getInfo(con):
                 result['loadToASP'] += 1
             elif line[0].find(load_to_ti) > -1:
                 result['loadToTI'] += 1
+            elif zaiv_1.match(line[0]):
+                # Это для второго варианта сервиса ПГУ
+                result['requestPGU'] += 1
+
     return result, err
 
 
