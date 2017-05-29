@@ -16,7 +16,7 @@ class case1(unittest.TestCase):
     def test1_BD_connect(self):
         """Проверяет возможность поключения к БД ТИ. Фактически проверяется правильность заполнения конфигурационного
         файла и наличие сетевой связанность с БД"""
-        db, err = getInfo.readConfig()
+        db, err, ftp = getInfo.readConfig()
         self.assertFalse(err, 'Ошибка при проверки конфигурационного файла: %s' % err)
         con, err = getInfo.getConnection(db)
         self.assertFalse(err, 'Ошибка при соединении с БД: %s' % err)

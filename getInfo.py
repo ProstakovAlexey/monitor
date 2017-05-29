@@ -99,6 +99,7 @@ def getInfo(con):
     # определение настроечных констант
     req = r'Регламент:'
     res = r'Запрос к методу'
+    res_1 = r'Запрос к сервису'
     zaiv_1 = re.compile(r'Заявка с номером .* принята успешно.')
     zaiv = r'к методу SetRequest'
     status = r'Статус по заявке'
@@ -129,7 +130,7 @@ def getInfo(con):
         for line in cur.fetchall():
             if line[0].find(req) > -1:
                 result['requestSmev'] += 1
-            elif line[0].find(res) > -1:
+            elif (line[0].find(res) > -1) or (line[0].find(res_1) > -1):
                 result['responseSmev'] += 1
             if line[0].find(zaiv) > -1:
                 result['requestPGU'] += 1
